@@ -1,4 +1,3 @@
-import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import './App.css';
 
@@ -16,23 +15,11 @@ function App() {
     fetchRandomMovies();
   }, []);
 
-  useEffect(() => {
-    // Define a function to perform the search
-    const searchMoviesDebounced = async () => {
-      const response = await axios.get(`http://www.omdbapi.com/?s=${searchQuery}&apikey=263d22d8`);
-      setMovies(response.data.Search);
-    };
-
-    // Use a timer to delay the search
-    const debounceTimer = setTimeout(() => {
-      searchMoviesDebounced();
-    }, 500); // Adjust the debounce delay as needed (e.g., 500ms)
-
-    // Clear the timer if the search query changes before the timer fires
-    return () => {
-      clearTimeout(debounceTimer);
-    };
-  }, [searchQuery]);
+  const searchMovies = async (event) => {
+    event.preventDefault();
+    const response = await axios.get(`http://www.omdbapi.com/?s=${searchQuery}&apikey=263d22d8`);
+    setMovies(response.data.Search);
+  };
 
   const getMovieDetails = async (imdbID) => {
     const response = await axios.get(`http://www.omdbapi.com/?i=${imdbID}&apikey=263d22d8`);
